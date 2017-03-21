@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.TypeDao">
+	 <resultMap type="com.utstar.networkshop.domain.Type" id="type">
+		<result property="typeId" column="typeid"></result>
+		<result property="name" column="name"></result>
+		<result property="note" column="note"></result>
+		<result property="parentId" column="parentId"></result>
+		<result property="isDisplay" column="isDisplay"></result>
+	</resultMap> 
+	<select id="getAllType" parameterType="com.utstar.networkshop.domain.Type" resultMap="type">
+		select typeid,name,parentId,isDisplay from type
+		<where>
+			<if test="isDisplay != null">
+				isDisplay = #{isDisplay}
+			</if>
+		</where>
+	</select>
+	<select id="getTypeList" parameterType="com.utstar.networkshop.domain.Type" resultMap="type">
+		select typeid,name,parentId,isDisplay from type
+		<where>
+			<if test="typeId != null">
+				typeid = #{typeId}
+			</if>
+			<if test="name != null">
+				and name = #{name}
+			</if>
+			<if test="isDisplay != null">
+				and isDisplay = #{isDisplay}
+			</if>
+			<if test="parentId != null">
+				and parentId = #{parentId}
+			</if>
+		</where>
+	</select>
+</mapper>

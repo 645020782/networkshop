@@ -1,0 +1,509 @@
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">    
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>鏂板反宸磋繍鍔ㄧ綉-鍟嗗搧璇︽儏椤�</title>
+<link rel="stylesheet" href="/res/css/style.css" />
+<script src="/res/js/jquery.js"></script>
+<script type="text/javascript" src="/res/js/com.js"></script>
+<style type="text/css">
+.changToRed {
+	border: 2px solid #e4393c;
+	padding: 2px 4px;
+	float: left;
+	margin-right: 4px;
+	text-decoration: none;
+}
+.changToWhite {
+	border: 1px solid #ccc;
+	padding: 2px 4px;
+	float: left;
+	margin-right: 4px;
+	text-decoration: none;
+}
+.not-allow {
+	cursor: not-allowed;
+	color: #999;
+	border: 1px dashed #ccc;
+	padding: 2px 4px;
+	float: left;
+	margin-right: 4px;
+	text-decoration: none;
+}
+</style>
+</head>
+<script type="text/javascript">
+$(function(){
+	//鍒濆鍖栫偣鍑荤涓�涓鑹�
+	$("#colors a:first").trigger("click");
+	//缁橝鏍囩缁戝畾浜嬩欢   -
+	$("#sub").click(function(){
+		//浠舵暟  1
+		var num = $("#num").val();
+		num--;
+		if(num == 0){
+			//alert();
+			return;
+		}
+		//璧嬪��
+		$("#num").val(num);
+	});
+	//+
+	$("#add").click(function(){
+		//浠舵暟  8
+		var num = $("#num").val();
+		num++;
+		//num 9      9
+		if(num > buyLimit){
+			alert("姝ゅ晢鍝佸彧鑳戒拱" + buyLimit + "浠�");
+			return;
+		}
+		//璧嬪��
+		$("#num").val(num);
+	});
+});
+//鍏ㄥ眬鍙橀噺
+//棰滆壊ID
+var colorId;
+//SkuId
+var skuId;
+//闄愯喘
+var buyLimit;
+
+//鐐瑰嚮棰滆壊  锟�128.00  id 棰滆壊ID
+function colorToRed(target,id){
+	//璧嬪��
+	colorId = id;
+	//鍏堟竻鐞嗗叾瀹冮鑹�
+	$("#colors a").each(function(){
+		$(this).attr("class","changToWhite");
+	});
+	//鍏堟竻鐞嗗昂鐮�  閮藉彉鎴愪笉鍙偣
+	$("#sizes a").each(function(){
+		$(this).attr("class","not-allow");
+	});
+	
+	$(target).attr("class","changToRed");
+	//鎺у埗灏虹爜 
+	var flag = 0;
+	//
+	<#list skus as sku>
+	  //鍒ゆ柇SKu涓笌褰撳墠閫夋嫨鐨勯鑹睮D涓�鏍风殑,鑾峰彇鍑烘墍鏈夊昂鐮�   
+		if(id == '${sku.colorId}'){
+			//鍥涙  S  L  XL  XXL
+			if(flag == 0){
+				$("#" + '${sku.size}').attr("class","changToRed");
+				flag = 1;
+				//璧嬪��
+				//宸村反浠�
+				$("#price").html("锟�" + '${sku.skuPrice}');
+				//甯傚満浠�
+				$("#mprice").html("锟�" + '${sku.marketPrice}');
+				//杩愯垂
+				$("#fee").html('${sku.deliveFee}');
+				//搴撳瓨
+				$("#stock").html('${sku.stockInventory}');
+				//skuId
+				skuId = '${sku.skuId}';
+				//
+				//闄愯喘
+				buyLimit = '${sku.skuUpperLimit}';
+				
+			}else{
+				$("#" + '${sku.size}').attr("class","changToWhite");
+			}
+		}
+	</#list>
+	
+}
+//鐐瑰嚮灏虹爜
+function sizeToRed(target,id){
+	
+	var cc = $(target).attr("class");
+	if(cc == "not-allow"){
+		return ;
+	}
+	//鍏堟竻鐞嗗昂鐮�  閮藉彉鎴愪笉鍙偣
+	$("#sizes a").each(function(){
+		var c = $(this).attr("class");
+		if(c != "not-allow"){
+			$(this).attr("class","changToWhite");
+		}
+	});
+	//灏虹爜鍙樼孩
+	$(target).attr("class","changToRed");
+	
+	<#list skus as sku>
+	  //鍒ゆ柇SKu涓笌褰撳墠閫夋嫨鐨勯鑹睮D涓�鏍风殑,鑾峰彇鍑烘墍鏈夊昂鐮�   
+		if(colorId == '${sku.colorId}' && id == '${sku.size}'){
+				//璧嬪��
+				//宸村反浠�
+				$("#price").html("锟�" + '${sku.skuPrice}');
+				//甯傚満浠�
+				$("#mprice").html("锟�" + '${sku.marketPrice}');
+				//杩愯垂
+				$("#fee").html('${sku.deliveFee}');
+				//搴撳瓨
+				$("#stock").html('${sku.stockInventory}');
+				//skuId
+				skuId = '${sku.skuId}';
+				//
+				//闄愯喘
+				buyLimit = '${sku.skuUpperLimit}';
+		}
+	</#list>
+}
+
+
+//鍔犲叆璐墿杞�
+function addCart(){
+	alert("娣诲姞璐墿杞︽垚鍔�!");
+}
+//绔嬪嵆璐拱
+function buy(productId){
+	window.location.href='/shopping/buyCart.shtml?skuId=' + skuId + "&amount=" + $("#num").val() + "&buyLimit=" + buyLimit + "&productId=" + productId;
+	//:/shopping/buyCart.shtml?skuId=500&amount=2&buyLimit=6&productId=265
+	//skuId  productId  浠舵暟   闄愯喘
+}
+</script>
+</head>
+<body>
+<div class="bar"><div class="bar_w">
+	<p class="l">
+		<span class="l">
+			鏀惰棌鏈綉绔欙紒鍖椾含<a href="#" title="鏇存崲">[鏇存崲]</a>
+		</span>
+	</p>
+	<ul class="r uls">
+		<li class="dev">
+			鎮ㄥソ,娆㈣繋鏉ュ埌鏂板反宸磋繍鍔ㄧ綉锛�
+		</li>
+	<li class="dev"><a href="javascript:void(0)" onclick="login()"  title="鐧婚檰">[鐧婚檰]</a></li>
+	<li class="dev"><a href="javascript:void(0)" onclick="register()" title="鍏嶈垂娉ㄥ唽">[鍏嶈垂娉ㄥ唽]</a></li>
+	<li class="dev"><a href="javascript:void(0)" onclick="logout()" title="閫�鍑�">[閫�鍑篯</a></li>
+	<li class="dev"><a href="javascript:void(0)" onclick="myOrder()" title="鎴戠殑璁㈠崟">鎴戠殑璁㈠崟</a></li>
+	<li class="dev"><a href="#" title="鍦ㄧ嚎瀹㈡湇">鍦ㄧ嚎瀹㈡湇</a></li>
+	<li class="dev after"><a href="#" title="English">English</a></li>
+	</ul>
+</div></div>
+<div class="w loc">
+	<div class="h-title">
+		<div class="h-logo"><a href="http://localhost:8080"><img src="/res/img/pic/logo-1.png" /></a></div>
+	    <div class="h-search">
+	      	<input type="text" />
+	        <div class="h-se-btn"><a href="#">鎼滅储</a></div>
+	    </div>
+	</div>
+	<dl id="cart" class="cart r">
+		<dt><a href="#" title="缁撶畻">缁撶畻</a>璐墿杞�:<b id="">123</b>浠�</dt>
+		<dd class="hidden">
+			<p class="alg_c hidden">璐墿杞︿腑杩樻病鏈夊晢鍝侊紝璧剁揣閫夎喘鍚э紒</p>
+			<h3 title="鏈�鏂板姞鍏ョ殑鍟嗗搧">鏈�鏂板姞鍏ョ殑鍟嗗搧</h3>
+			<ul class="uls">
+				<li>
+					<a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">
+					<img src="/res/img/pic/p50x50.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�" /></a>
+					<p class="dt"><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�</a></p>
+					<p class="dd">
+						<b><var>楼128</var><span>x1</span></b>
+						<a href="javascript:void(0);" title="鍒犻櫎" class="del">鍒犻櫎</a>
+					</p>
+				</li>
+				<li>
+					<a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">
+					<img src="/res/img/pic/p50x50.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�" /></a>
+					<p class="dt"><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�</a></p>
+					<p class="dd">
+						<b><var>楼128</var><span>x1</span></b>
+						<a href="javascript:void(0);" title="鍒犻櫎" class="del">鍒犻櫎</a>
+					</p>
+				</li>
+				<li>
+					<a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">
+					<img src="/res/img/pic/p50x50.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�" /></a>
+					<p class="dt"><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�</a></p>
+					<p class="dd">
+						<b><var>楼128</var><span>x1</span></b>
+						<a href="javascript:void(0);" title="鍒犻櫎" class="del">鍒犻櫎</a>
+					</p>
+				</li>
+				<li>
+					<a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">
+					<img src="/res/img/pic/p50x50.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�" /></a>
+					<p class="dt"><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�</a></p>
+					<p class="dd">
+						<b><var>楼128</var><span>x1</span></b>
+						<a href="javascript:void(0);" title="鍒犻櫎" class="del">鍒犻櫎</a>
+					</p>
+				</li>
+				<li>
+					<a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">
+					<img src="/res/img/pic/p50x50.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�" /></a>
+					<p class="dt"><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊 鐟滅張鍋ヨ韩鏈嶄笁浠跺 骞垮満鑸炶箞鏈嶈 濂崇憸浼芥湇閫佽兏鍨� 闀胯绱壊 M鍏ㄥ満鏀寔璐у埌浠樻 鍏ㄧ綉鏈�浣庝环 鍗冧汉瓒呴珮濂借瘎鐟滀冀鏈嶈刀绱ф姠锛佸叏浜斿垎濂借瘎鎴浘鑱旂郴瀹㈡湇杩樿繑鐜颁簲鍏�</a></p>
+					<p class="dd">
+						<b><var>楼128</var><span>x1</span></b>
+						<a href="javascript:void(0);" title="鍒犻櫎" class="del">鍒犻櫎</a>
+					</p>
+				</li>
+			</ul>
+			<div>
+				<p>鍏�<b>5</b>浠跺晢鍝�&nbsp;&nbsp;&nbsp;&nbsp;鍏辫<b class="f20">楼640.00</b></p>
+				<a href="#" title="鍘昏喘鐗╄溅缁撶畻" class="inb btn120x30c">鍘昏喘鐗╄溅缁撶畻</a>
+			</div>
+		</dd>
+	</dl>
+</div>
+
+<div class="w ofc mt">
+	<div class="l">
+		<div class="showPro">
+			<div class="big"><a id="showImg" class="cloud-zoom" href="${product.img.allUrl }" rel="adjustX:10,adjustY:-1"><img alt="" src="${product.img.allUrl }"></a></div>
+		</div>
+	</div>
+	<div class="r" style="width: 640px">
+		<ul class="uls form">
+			<li><h2>${product.name }</h2></li>
+			<li><label>宸�  宸� 浠凤細</label><span class="word"><b class="f14 red mr" id="price">锟�128.00</b>(甯傚満浠�:<del id="mprice">锟�150.00</del>)</span></li>
+			<li><label>鍟嗗搧璇勪环锛�</label><span class="word"><span class="val_no val3d4" title="4鍒�">4鍒�</span><var class="blue">(宸叉湁888浜鸿瘎浠�)</var></span></li>
+			<li><label>杩愩��銆�璐癸細</label><span class="word" id="fee">10鍏�</span></li>
+			<li><label>搴撱��銆�瀛橈細</label><span class="word" id="stock">100</span><span class="word" >浠�</span></li>
+			<li><label>閫夋嫨棰滆壊锛�</label>
+				<div id="colors" class="pre spec">
+					<#list colors as color>
+					<a onclick="colorToRed(this,${color.colorId})" href="javascript:void(0)" title="${color.name }" class="changToWhite"><img width="25" height="25" data-img="1" src="/res/img/pic/ppp00.jpg" alt="${color.name } "><i>${color.name }</i></a>
+					</#list>
+				</div>
+			</li>
+				<li id="sizes"><label>灏恒��銆�鐮侊細</label>
+						<a href="javascript:void(0)" class="not-allow"  id="S" onclick="sizeToRed(this,'S')">S</a>
+						<a href="javascript:void(0)" class="not-allow"  id="M" onclick="sizeToRed(this,'M')">M</a>
+						<a href="javascript:void(0)" class="not-allow"  id="L" onclick="sizeToRed(this,'L')">L</a>
+						<a href="javascript:void(0)" class="not-allow"  id="XL" onclick="sizeToRed(this,'XL')">XL</a>
+						<a href="javascript:void(0)" class="not-allow"  id="XXL" onclick="sizeToRed(this,'XXL')">XXL</a>
+			</li>
+			<li><label>鎴� 瑕� 涔帮細</label>
+				<a id="sub" class="inb arr" style="border: 1px solid #919191;width: 10px;height: 10px;line-height: 10px;text-align: center;" title="鍑�" href="javascript:void(0);" >-</a>
+				<input id="num" type="text" value="1" name="" size="1" readonly="readonly">
+				<a id="add" class="inb arr" style="border: 1px solid #919191;width: 10px;height: 10px;line-height: 10px;text-align: center;" title="鍔�" href="javascript:void(0);">+</a></li>
+			<li class="submit"><input type="button" value="" class="hand btn138x40" onclick="buy();"/><input type="button" value="" class="hand btn138x40b" onclick="addCart()"/></li>
+		</ul>
+	</div>
+</div>
+<div class="w ofc mt">
+<div class="l wl">
+	<h2 class="h2 h2_l mt"><em title="閿�閲忔帓琛屾">閿�閲忔帓琛屾</em><cite></cite></h2>
+	<div class="box bg_white">
+		<ul class="uls x_50x50">
+			<li>
+				<var class="sfont">1</var>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<var class="sfont">2</var>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<var class="sfont">3</var>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<h2 class="h2 h2_l mt"><em title="鎴戠殑娴忚璁板綍">鎴戠殑娴忚璁板綍</em><cite></cite></h2>
+	<div class="box bg_white">
+		<ul class="uls x_50x50">
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+			<li>
+				<a href="#" title="瀵屼竴浠�" target="_blank" class="pic"><img src="/res/img/pic/ppp.jpg" alt="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" /></a>
+				<dl>
+					<!-- dt 8涓枃瀛�+... -->
+					<dt><a href="#" title="渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊" target="_blank">渚濈惁鑾�2014鐟滀冀鏈嶅瑁呮柊</a></dt>
+					<dd class="orange">锟�120 ~ 锟�150</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	
+	<h2 class="h2 h2_l mt"><em title="鍟嗗绮鹃��">鍟嗗绮鹃��</em><cite></cite></h2>
+	<img src="/res/img/pic/ad200x75.jpg" alt="" />
+</div>
+<div class="r wr">
+		<h2 class="h2 h2_ch mt"><em>
+			<a href="javascript:void(0);" title="鍟嗗搧浠嬬粛" rel="#detailTab1" class="here">鍟嗗搧浠嬬粛</a>
+			<a href="javascript:void(0);" title="瑙勬牸鍙傛暟" rel="#detailTab2">瑙勬牸鍙傛暟</a>
+			<a href="javascript:void(0);" title="鍖呰娓呭崟" rel="#detailTab3">鍖呰娓呭崟</a></em><cite></cite></h2>
+		<div class="box bg_white ofc">
+			<div id="detailTab1" class="detail">
+				${product.description }
+			</div>
+			
+			<div id="detailTab2" style="display:none">
+				<strong>鏈嶅姟鎵胯锛�</strong><br>
+	浜笢鍚戞偍淇濊瘉鎵�鍞晢鍝佸潎涓烘鍝佽璐э紝浜笢鑷惀鍟嗗搧寮�鍏锋満鎵撳彂绁ㄦ垨鐢靛瓙鍙戠エ銆傚嚟璐ㄤ繚璇佷功鍙婁含涓滃彂绁紝鍙韩鍙楀叏鍥借仈淇濇湇鍔★紙濂緢鍝併�侀挓琛ㄩ櫎澶栵紱濂緢鍝併�侀挓琛ㄧ敱浜笢鑱旂郴淇濅慨锛屼韩鍙楁硶瀹氫笁鍖呭敭鍚庢湇鍔★級锛屼笌鎮ㄤ翰涓村晢鍦洪�夎喘鐨勫晢鍝佷韩鍙楃浉鍚岀殑璐ㄩ噺淇濊瘉銆備含涓滆繕涓烘偍鎻愪緵鍏锋湁绔炰簤鍔涚殑鍟嗗搧浠锋牸鍜�<a target="_blank" href="http://www.jd.com/help/kdexpress.aspx">杩愯垂鏀跨瓥</a>锛岃鎮ㄦ斁蹇冭喘涔帮紒
+	<br><br>
+	娉細鍥犲巶瀹朵細鍦ㄦ病鏈変换浣曟彁鍓嶉�氱煡鐨勬儏鍐典笅鏇存敼浜у搧鍖呰銆佷骇鍦版垨鑰呬竴浜涢檮浠讹紝鏈徃涓嶈兘纭繚瀹㈡埛鏀跺埌鐨勮揣鐗╀笌鍟嗗煄鍥剧墖銆佷骇鍦般�侀檮浠惰鏄庡畬鍏ㄤ竴鑷淬�傚彧鑳界‘淇濅负鍘熷巶姝ｈ揣锛佸苟涓斾繚璇佷笌褰撴椂甯傚満涓婂悓鏍蜂富娴佹柊鍝佷竴鑷淬�傝嫢鏈晢鍩庢病鏈夊強鏃舵洿鏂帮紝璇峰ぇ瀹惰皡瑙ｏ紒 <br/>
+		<strong>鏉冨埄澹版槑锛�</strong><br>浜笢涓婄殑鎵�鏈夊晢鍝佷俊鎭�佸鎴疯瘎浠枫�佸晢鍝佸挩璇€�佺綉鍙嬭璁虹瓑鍐呭锛屾槸浜笢閲嶈鐨勭粡钀ヨ祫婧愶紝鏈粡璁稿彲锛岀姝㈤潪娉曡浆杞戒娇鐢ㄣ��
+	<p><b>娉細</b>鏈珯鍟嗗搧淇℃伅鍧囨潵鑷簬鍚堜綔鏂癸紝鍏剁湡瀹炴�с�佸噯纭�у拰鍚堟硶鎬х敱淇℃伅鎷ユ湁鑰咃紙鍚堜綔鏂癸級璐熻矗銆傛湰绔欎笉鎻愪緵浠讳綍淇濊瘉锛屽苟涓嶆壙鎷呬换浣曟硶寰嬭矗浠汇��</p>	
+				
+			</div>
+
+			<div id="detailTab3" class="detail" style="display:none">
+
+	<pre class="f14">
+		${product.packageList }
+	</pre>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="mode">
+	<div class="tl"></div><div class="tr"></div>
+	<ul class="uls">
+		<li class="first">
+			<span class="guide"></span>
+			<dl>
+			<dt title="璐墿鎸囧崡">璐墿鎸囧崡</dt>
+			<dd><a href="#" title="璐墿娴佺▼">璐墿娴佺▼</a></dd>
+			<dd><a href="#" title="璐墿娴佺▼">璐墿娴佺▼</a></dd>
+			<dd><a href="#" target="_blank" title="鑱旂郴瀹㈡湇">鑱旂郴瀹㈡湇</a></dd>
+			<dd><a href="#" target="_blank" title="鑱旂郴瀹㈡湇">鑱旂郴瀹㈡湇</a></dd>
+			</dl>
+		</li>
+		<li>
+			<span class="way"></span>
+			<dl>
+			<dt title="鏀粯鏂瑰紡">鏀粯鏂瑰紡</dt>
+			<dd><a href="#" title="璐у埌浠樻">璐у埌浠樻</a></dd>
+			<dd><a href="#" title="鍦ㄧ嚎鏀粯">鍦ㄧ嚎鏀粯</a></dd>
+			<dd><a href="#" title="鍒嗘湡浠樻">鍒嗘湡浠樻</a></dd>
+			<dd><a href="#" title="鍒嗘湡浠樻">鍒嗘湡浠樻</a></dd>
+			</dl>
+		</li>
+		<li>
+			<span class="help"></span>
+			<dl>
+			<dt title="閰嶉�佹柟寮�">閰嶉�佹柟寮�</dt>
+			<dd><a href="#" title="涓婇棬鑷彁">涓婇棬鑷彁</a></dd>
+			<dd><a href="#" title="涓婇棬鑷彁">涓婇棬鑷彁</a></dd>
+			<dd><a href="#" title="涓婇棬鑷彁">涓婇棬鑷彁</a></dd>
+			<dd><a href="#" title="涓婇棬鑷彁">涓婇棬鑷彁</a></dd>
+			</dl>
+		</li>
+		<li>
+			<span class="service"></span>
+			<dl>
+			<dt title="鍞悗鏈嶅姟">鍞悗鏈嶅姟</dt>
+			<dd><a href="#" target="_blank" title="鍞悗绛栫暐">鍞悗绛栫暐</a></dd>
+			<dd><a href="#" target="_blank" title="鍞悗绛栫暐">鍞悗绛栫暐</a></dd>
+			<dd><a href="#" target="_blank" title="鍞悗绛栫暐">鍞悗绛栫暐</a></dd>
+			<dd><a href="#" target="_blank" title="鍞悗绛栫暐">鍞悗绛栫暐</a></dd>
+			</dl>
+		</li>
+		<li>
+			<span class="problem"></span>
+			<dl>
+			<dt title="鐗硅壊鏈嶅姟">鐗硅壊鏈嶅姟</dt>
+			<dd><a href="#" target="_blank" title="澶哄疂宀�">澶哄疂宀�</a></dd>
+			<dd><a href="#" target="_blank" title="澶哄疂宀�">澶哄疂宀�</a></dd>
+			<dd><a href="#" target="_blank" title="澶哄疂宀�">澶哄疂宀�</a></dd>
+			<dd><a href="#" target="_blank" title="澶哄疂宀�">澶哄疂宀�</a></dd>
+			</dl>
+		</li>
+	</ul>
+</div>
+</body>
+</html>

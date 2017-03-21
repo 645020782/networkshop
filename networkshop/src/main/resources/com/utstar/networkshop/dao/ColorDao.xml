@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.ColorDao">
+	 <resultMap type="com.utstar.networkshop.domain.Color" id="color">
+		<result property="colorId" column="colorid"></result>
+		<result property="name" column="name"></result>
+		<result property="parentId" column="parentId"></result>
+		<result property="imgUrl" column="imgurl"></result>
+	</resultMap> 
+	<select id="getAllColor" parameterType="com.utstar.networkshop.domain.Color" resultMap="color">
+		select colorid,name,parentId,imgurl from color
+		<where>
+			<if test="parentId != null">
+				parentid=#{parentId}
+			</if>
+		</where>
+	</select>
+	<select id="getColorByKey" resultMap="color" parameterType="hashMap">
+		SELECT colorid,name,parentId,imgurl FROM color
+		WHERE
+		colorid=#{colorId}
+	</select>
+</mapper>

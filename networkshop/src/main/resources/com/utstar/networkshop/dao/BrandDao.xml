@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.BrandDao">
+	 <resultMap type="com.utstar.networkshop.domain.Brand" id="brand">
+		<result property="brandId" column="brandid"></result>
+		<result property="brandName" column="brandname"></result>
+		<result property="description" column="description"></result>
+		<result property="imgUrl" column="img_url"></result>
+		<result property="sort" column="sort"></result>
+		<result property="isDisplay" column="is_display"></result>
+	</resultMap> 
+	<select id="getBrandListWithPage" parameterType="com.utstar.networkshop.domain.Brand" resultMap="brand">
+		select brandid , brandname ,description,img_url,sort,is_display from brand 
+		<where>
+			<if test="isDisplay !=null">
+				is_display = #{isDisplay}
+			</if>
+			<if test="brandName != null">
+				and brandname = #{brandName}
+			</if>
+		</where>
+		order by brandid asc
+		limit  #{beginRecord},#{pageSize}
+	</select>
+	<select id="getBrandRecodeTotal" parameterType="com.utstar.networkshop.domain.Brand" resultType="java.lang.Integer">
+		select count(1) from brand 
+		<where>
+			<if test="isDisplay !=null">
+				is_display = #{isDisplay}
+			</if>
+			<if test="brandName != null">
+				and brandname = #{brandName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAllBrand" parameterType="com.utstar.networkshop.domain.Brand" resultMap="brand">
+		select brandid , brandname ,description,img_url,sort,is_display from brand 
+		<where>
+			<if test="isDisplay !=null">
+				is_display = #{isDisplay}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getBrandById" parameterType="Integer" resultMap="brand">
+		select brandid , brandname ,description,img_url,sort,is_display from brand
+		<!-- where brandid=#{0} -->
+		<where>
+			<if test="brandId != null">
+				brandid=#{brandId}
+			</if>
+		</where> 
+	</select>
+	<update id="delBrandById" parameterType="com.utstar.networkshop.domain.Brand">
+		update brand set is_display=0 where brandid=#{brandId}
+	</update>
+	<update id="editBrandById" parameterType="com.utstar.networkshop.domain.Brand">
+		update brand set is_display=#{isDisplay},brandname=#{brandName},
+		description=#{description},sort=#{sort},img_url=#{imgUrl},web_size=#{webSize} where brandid=#{brandId}
+	</update>
+	<insert id="addBrand" parameterType="com.utstar.networkshop.domain.Brand">
+		<selectKey keyProperty="brandId" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into brand(brandname,description,img_url,sort,is_display,web_size)
+		values(#{brandName},#{description},#{imgUrl},#{sort},#{isDisplay},#{webSize})
+	</insert>
+</mapper>

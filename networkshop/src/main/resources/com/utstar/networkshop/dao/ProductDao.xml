@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.ProductDao">
+	 <resultMap type="com.utstar.networkshop.domain.Product" id="product">
+		<result property="productId" column="productid"></result>
+		<result property="no" column="no"></result>
+		<result property="name" column="name"></result>
+		<result property="weight" column="weight"></result>
+		<result property="isNew" column="is_new"></result>
+		<result property="isHot" column="is_hot"></result>
+		<result property="isCommend" column="is_commend"></result>
+		<result property="createTime" column="createtime"></result>
+		<result property="createUserId" column="createuserid"></result>
+		<result property="checkTime" column="checktime"></result>
+		<result property="checkUserId" column="checkuserid"></result>
+		<result property="isShow" column="is_show"></result>
+		<result property="isDel" column="is_del"></result>
+		<result property="typeId" column="typeid"></result>
+		<result property="keyWords" column="keywords"></result>
+		<result property="sales" column="sales"></result>
+		<result property="description" column="description"></result>
+		<result property="packageList" column="packagelist"></result>
+		<result property="feature" column="feature"></result>
+		<result property="color" column="color"></result>
+		<result property="size" column="size"></result>
+		<result property="brandId" column="brandid"></result>
+	</resultMap> 
+	<select id="getProductListWithPage" parameterType="com.utstar.networkshop.domain.Product" resultMap="product">
+		select productid,no,name,weight,is_new,is_hot,is_commend,createtime,createuserid,checktime,checkuserid,is_show,
+		is_del,typeid,keywords,sales,description,packagelist,feature,color,size,brandid from product
+		<where>
+			<if test="isShow !=null">
+				is_show = #{isShow}
+			</if>
+			<if test="name != null">
+				and name like  "%"#{name}"%"
+			</if>
+			<if test="productId != null">
+				and productid =  #{productId}
+			</if>
+			<if test="no != null">
+				and no = #{no}
+			</if>
+			<if test="weight != null">
+					and weight=#{weight}
+				</if>
+				<if test="isNew != null">
+					and is_new=#{isNew}
+				</if>
+				<if test="isHot != null">
+					and is_hot=#{isHot}
+				</if>
+				<if test="isCommend != null">
+					and is_commend=#{isCommend}
+				</if>
+				<if test="createTime != null">
+					and create_time = #{createTime}
+				</if>
+				<if test="createUserId != null">
+					and create_user_id=#{createUserId}
+				</if>
+				<if test="checkTime != null">
+					and check_time=#{checkTime}
+				</if>
+				<if test="checkUserId != null">
+					and check_user_id=#{checkUserId}
+				</if>
+				<if test="isDel != null">
+					and is_del=#{isDel}
+				</if>
+				<if test="typeId != null">
+					and type_id=#{typeId}
+				</if>
+				<if test="brandId != null">
+					and brandid=#{brandId}
+				</if>
+				<if test="keyWords != null">
+					and  keywords like "%"#{keyWords}"%"
+				</if>
+				<if test="sales != null">
+					and sales=#{sales}
+				</if>
+				<if test="description != null">
+					and description=#{description}
+				</if>
+				<if test="packageList != null">
+					and  package_list like "%"#{packageList}"%"
+				</if>
+				<if test="feature != null">
+					and  feature like "%"#{feature}"%"
+				</if>
+				<if test="color != null">
+					and color=#{color}
+				</if>
+				<if test="size != null">
+					and size=#{size}
+				</if>
+		</where>
+		order by productid asc
+		limit  #{beginRecord},#{pageSize}
+	</select>
+	<select id="getProductById" parameterType="Integer" resultMap="product">
+		select productid,no,name,weight,is_new,is_hot,is_commend,createtime,createuserid,checktime,checkuserid,is_show,
+		is_del,typeid,keywords,sales,description,packagelist,feature,color,size,brandid from product
+		<where>
+			<if test="productId != null">
+				productid=#{productId}
+			</if>
+		</where>
+	</select>
+	<select id="getProductRecodeTotal" parameterType="com.utstar.networkshop.domain.Product" resultType="java.lang.Integer">
+		select count(1) from product 
+		<where>
+			<if test="isShow !=null">
+				is_show = #{isShow}
+			</if>
+			<if test="name != null">
+				and name = #{name}
+			</if>
+		</where>
+	</select>
+	<update id="delProductById" parameterType="com.utstar.networkshop.domain.Product">
+		update product set is_display=0 where productid=#{productId}
+	</update>
+	<update id="editProductById" parameterType="com.utstar.networkshop.domain.Product">
+		update product set is_show=#{isShow},name=#{name} where productid=#{productId}
+	</update>
+	<insert id="addProduct" parameterType="com.utstar.networkshop.domain.Product" useGeneratedKeys="true" keyProperty="productId">
+		INSERT INTO product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="productId != null">
+					productid,
+				</if>
+				<if test="no != null">
+					no,
+				</if>
+				<if test="name != null">
+					name,
+				</if>
+				<if test="weight != null">
+					weight,
+				</if>
+				<if test="isNew != null">
+					is_new,
+				</if>
+				<if test="isHot != null">
+					is_hot,
+				</if>
+				<if test="isCommend != null">
+					is_commend,
+				</if>
+				<if test="createTime != null">
+					createtime,
+				</if>
+				<if test="createUserId != null">
+					createuserid,
+				</if>
+				<if test="checkTime != null">
+					checktime,
+				</if>
+				<if test="checkUserId != null">
+					checkuserid,
+				</if>
+				<if test="isShow != null">
+					is_show,
+				</if>
+				<if test="isDel != null">
+					is_del,
+				</if>
+				<if test="typeId != null">
+					typeid,
+				</if>
+				<if test="brandId != null">
+					brandid,
+				</if>
+				<if test="keyWords != null">
+					keywords,
+				</if>
+				<if test="sales != null">
+					sales,
+				</if>
+				<if test="description != null">
+					description,
+				</if>
+				<if test="packageList != null">
+					packagelist,
+				</if>
+				<if test="feature != null">
+					feature,
+				</if>
+				<if test="color != null">
+					color,
+				</if>
+					<if test="size != null">
+						size
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="productId != null">
+						#{productId},
+					</if>
+					<if test="no != null">
+						#{no},
+					</if>
+					<if test="name != null">
+						#{name},
+					</if>
+					<if test="weight != null">
+						#{weight},
+					</if>
+					<if test="isNew != null">
+						#{isNew},
+					</if>
+					<if test="isHot != null">
+						#{isHot},
+					</if>
+					<if test="isCommend != null">
+						#{isCommend},
+					</if>
+					<if test="createTime != null">
+						#{createTime},
+					</if>
+					<if test="createUserId != null">
+						#{createUserId},
+					</if>
+					<if test="checkTime != null">
+						#{checkTime},
+					</if>
+					<if test="checkUserId != null">
+						#{checkUserId},
+					</if>
+					<if test="isShow != null">
+						#{isShow},
+					</if>
+					<if test="isDel != null">
+						#{isDel},
+					</if>
+					<if test="typeId != null">
+						#{typeId},
+					</if>
+					<if test="brandId != null">
+						#{brandId},
+					</if>
+					<if test="keyWords != null">
+						#{keyWords},
+					</if>
+					<if test="sales != null">
+						#{sales},
+					</if>
+					<if test="description != null">
+						#{description},
+					</if>
+					<if test="packageList != null">
+						#{packageList},
+					</if>
+					<if test="feature != null">
+						#{feature},
+					</if>
+					<if test="color != null">
+						#{color},
+					</if>
+					<if test="size != null">
+						#{size}
+					</if>
+		</trim>
+	</insert>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.FeatureDao">
+	 <resultMap type="com.utstar.networkshop.domain.Feature" id="feature">
+		<result property="featureId" column="featureid" />
+		<result property="name" column="name" />
+		<result property="value" column="value" />
+		<result property="sort" column="sort" />
+		<result property="isdel" column="isdel" />
+	</resultMap> 
+	<select id="getAllFeature" parameterType="com.utstar.networkshop.domain.Feature" resultMap="feature">
+		select featureid,name,value,sort,isdel from feature
+		<where>
+			<if test="isdel != null">
+				isdel = #{isdel}
+			</if>
+		</where>
+	</select>
+	<select id="getFeatureList" parameterType="com.utstar.networkshop.domain.Feature" resultMap="feature">
+		select featureid,name,value,sort,isdel from feature
+		<where>
+			<if test="featureId != null">
+				featureid = #{featureId}
+			</if>
+			<if test="name != null">
+				name = #{name}
+			</if>
+			<if test="value != null">
+				value = #{value}
+			</if>
+			<if test="sort != null">
+				sort = #{sort}
+			</if>
+			<if test="isdel != null">
+				isdel = #{isdel}
+			</if>
+		</where>
+	</select>
+</mapper>

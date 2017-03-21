@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.utstar.networkshop.dao.OrderDao">
+	<resultMap id="order" type="com.utstar.networkshop.domain.Order">
+		<result property="id" column="id" />
+		<result property="oid" column="oid" />
+		<result property="deliverFee" column="deliverfee" />
+		<result property="payableFee" column="payablefee" />
+		<result property="totalPrice" column="totalprice" />
+		<result property="paymentWay" column="paymentway" />
+		<result property="paymentCash" column="paymentcash" />
+		<result property="delivery" column="delivery" />
+		<result property="isConfirm" column="isconfirm" />
+		<result property="isPaiy" column="ispaiy" />
+		<result property="state" column="state" />
+		<result property="createDate" column="createdate" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
+		<result property="note" column="note" />
+		<result property="buyerId" column="buyerid" />
+	</resultMap>
+	<!-- Select SQL -->
+	<sql id="orderSelector">
+		SELECT
+			id,oid,deliverfee,payablefee,totalprice,paymentway,paymentcash,delivery,isconfirm,ispaiy,state,createdate,note,buyerid
+		FROM `order`
+	</sql>
+	<sql id="orderListWhere">
+		<where>
+				<if test="id != null">
+					 id=#{id}
+				</if>
+				<if test="oid != null">
+					and oid=#{oid}
+				</if>
+				<if test="deliverFee != null">
+					and deliverfee=#{deliverFee}
+				</if>
+				<if test="payableFee != null">
+					and payablefee=#{payableFee}
+				</if>
+				<if test="totalPrice != null">
+					and totalprice=#{totalPrice}
+				</if>
+				<if test="paymentWay != null">
+					and paymentway=#{paymentWay}
+				</if>
+				<if test="paymentCash != null">
+					and paymentcash=#{paymentCash}
+				</if>
+				<if test="delivery != null">
+					and delivery=#{delivery}
+				</if>
+				<if test="isConfirm != null">
+					and isconfirm=#{isConfirm}
+				</if>
+				<if test="isPaiy != null">
+					and ispaiy=#{isPaiy}
+				</if>
+				<if test="state != null">
+					and state=#{state}
+				</if>
+				<if test="createDate != null">
+					and createdate=#{createDate}
+				</if>
+				<if test="note != null">
+					and note=#{note}
+				</if>
+				<if test="buyerId != null">
+					and buyer_id=#{buyerId}
+				</if>
+		</where>
+	</sql>
+	<!-- 根据主键查询 -->
+	<select id="getOrderByKey" resultMap="order" parameterType="hashMap">
+		SELECT id,oid,deliverfee,payablefee,totalprice,paymentway,paymentcash,delivery,isconfirm,ispaiy,state,createdate,note,buyerid FROM `order`
+		WHERE
+		id=#{id}
+	</select>
+	<select id="getOrdersByKeys" resultMap="order" parameterType="ArrayList">
+		SELECT id,oid,deliverfee,payablefee,totalprice,paymentway,paymentcash,delivery,isconfirm,ispaiy,state,createdate,note,buyerid FROM `order`
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 根据主键删除 -->
+	<delete id="deleteByKey" parameterType="hashMap">
+		DELETE FROM `order`
+		WHERE
+		id=#{id}
+	</delete>
+
+	<!-- 根据主键批量删除 -->
+	<delete id="deleteByKeys">
+		DELETE FROM `order`
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 根据主键更新 -->
+	<update id="updateOrderByKey" parameterType="com.utstar.networkshop.domain.Order">
+		UPDATE `order`
+		<set>
+			<trim suffixOverrides=",">
+				<if test="id != null">
+					id = #{id},
+				</if>
+				<if test="oid != null">
+					oid = #{oid},
+				</if>
+				<if test="deliverFee != null">
+					deliverfee = #{deliverFee},
+				</if>
+				<if test="payableFee != null">
+					payablefee = #{payableFee},
+				</if>
+				<if test="totalPrice != null">
+					totalprice = #{totalPrice},
+				</if>
+				<if test="paymentWay != null">
+					paymentway = #{paymentWay},
+				</if>
+				<if test="paymentCash != null">
+					paymentcash = #{paymentCash},
+				</if>
+				<if test="delivery != null">
+					delivery = #{delivery},
+				</if>
+				<if test="isConfirm != null">
+					isconfirm = #{isConfirm},
+				</if>
+				<if test="isPaiy != null">
+					ispaiy = #{isPaiy},
+				</if>
+				<if test="state != null">
+					state = #{state},
+				</if>
+				<if test="createDate != null">
+					createdate = #{createDate},
+				</if>
+				<if test="note != null">
+					note = #{note},
+				</if>
+				<if test="buyerId != null">
+					buyerid = #{buyerId}
+				</if>
+			</trim>
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+	<!-- 分页 -->
+	<select id="getOrderListWithPage" parameterType="com.utstar.networkshop.domain.Order" resultMap="order">
+		<include refid="orderSelector" />
+		<include refid="orderListWhere" />
+	</select>
+	<!-- 数据总数 -->
+	<select id="getOrderListCount" parameterType="com.utstar.networkshop.domain.Order" resultType="int">
+		SELECT count(1) FROM `order`
+		<include refid="orderListWhere" />
+	</select>
+	<!-- 数据集合 -->
+	<select id="getOrderList" parameterType="com.utstar.networkshop.domain.Order" resultMap="order">
+		<include refid="orderSelector" />
+		<include refid="orderListWhere" />
+	</select>
+	<!-- 添加 -->
+	<insert id="addOrder" parameterType="com.utstar.networkshop.domain.Order">
+		<selectKey order="AFTER" resultType="Integer" keyProperty="id">
+			select LAST_INSERT_ID()
+		</selectKey>
+			INSERT INTO `order`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="id != null">
+					id,
+				</if>
+				<if test="oid != null">
+					oid,
+				</if>
+				<if test="deliverFee != null">
+					deliverfee,
+				</if>
+				<if test="payableFee != null">
+					payablefee,
+				</if>
+				<if test="totalPrice != null">
+					totalprice,
+				</if>
+				<if test="paymentWay != null">
+					paymentway,
+				</if>
+				<if test="paymentCash != null">
+					paymentcash,
+				</if>
+				<if test="delivery != null">
+					delivery,
+				</if>
+				<if test="isConfirm != null">
+					isconfirm,
+				</if>
+				<if test="isPaiy != null">
+					ispaiy,
+				</if>
+				<if test="state != null">
+					state,
+				</if>
+				<if test="createDate != null">
+					createdate,
+				</if>
+				<if test="note != null">
+					note,
+				</if>
+					<if test="buyerId != null">
+						buyerid
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="id != null">
+						#{id},
+					</if>
+					<if test="oid != null">
+						#{oid},
+					</if>
+					<if test="deliverFee != null">
+						#{deliverFee},
+					</if>
+					<if test="payableFee != null">
+						#{payableFee},
+					</if>
+					<if test="totalPrice != null">
+						#{totalPrice},
+					</if>
+					<if test="paymentWay != null">
+						#{paymentWay},
+					</if>
+					<if test="paymentCash != null">
+						#{paymentCash},
+					</if>
+					<if test="delivery != null">
+						#{delivery},
+					</if>
+					<if test="isConfirm != null">
+						#{isConfirm},
+					</if>
+					<if test="isPaiy != null">
+						#{isPaiy},
+					</if>
+					<if test="state != null">
+						#{state},
+					</if>
+					<if test="createDate != null">
+						#{createDate},
+					</if>
+					<if test="note != null">
+						#{note},
+					</if>
+					<if test="buyerId != null">
+						#{buyerId}
+					</if>
+		</trim>
+	</insert>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.utstar.networkshop.dao.CityDao">
+	<resultMap id="city" type="com.utstar.networkshop.domain.City">
+		<result property="id" column="id" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="provincecode" column="provincecode" />
+	</resultMap>
+	<!-- Select SQL -->
+	<sql id="citySelector">
+		SELECT
+			id,code,name,provincecode
+		FROM city
+	</sql>
+	<sql id="cityListWhere">
+		<where>
+				<if test="id != null">
+					and id=#{id}
+				</if>
+				<if test="code != null">
+					and code=#{code}
+				</if>
+				<if test="name != null">
+					and name=#{name}
+				</if>
+				<if test="provincecode != null">
+					and provincecode=#{provincecode}
+				</if>
+		</where>
+	</sql>
+
+	<sql id="cityListLimit">
+		<if test="startRow != null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 根据主键查询 -->
+	<select id="getCityByKey" resultMap="city" parameterType="hashMap">
+		SELECT id,code,name,provincecode FROM city
+		WHERE
+		id=#{id}
+	</select>
+	<select id="getCitysByKeys" resultMap="city" parameterType="ArrayList">
+		SELECT id,code,name,provincecode FROM city
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 根据主键删除 -->
+	<delete id="deleteByKey" parameterType="hashMap">
+		DELETE FROM city
+		WHERE
+		id=#{id}
+	</delete>
+
+	<!-- 根据主键批量删除 -->
+	<delete id="deleteByKeys">
+		DELETE FROM city
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 根据主键更新 -->
+	<update id="updateCityByKey" parameterType="com.utstar.networkshop.domain.City">
+		UPDATE city
+		<set>
+			<trim suffixOverrides=",">
+				<if test="id != null">
+					id = #{id},
+				</if>
+				<if test="code != null">
+					code = #{code},
+				</if>
+				<if test="name != null">
+					name = #{name},
+				</if>
+				<if test="provincecode != null">
+					provincecode = #{provincecode}
+				</if>
+			</trim>
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+	<!-- 分页 -->
+	<select id="getCityListWithPage" parameterType="com.utstar.networkshop.domain.City" resultMap="city">
+		<include refid="citySelector" />
+		<include refid="cityListWhere" />
+	</select>
+	<!-- 数据总数 -->
+	<select id="getCityListCount" parameterType="com.utstar.networkshop.domain.City" resultType="int">
+		SELECT count(1) FROM city
+		<include refid="cityListWhere" />
+	</select>
+	<!-- 数据集合 -->
+	<select id="getCityList" parameterType="com.utstar.networkshop.domain.City" resultMap="city">
+		<include refid="citySelector" />
+		<include refid="cityListWhere" />
+	</select>
+	<!-- 添加 -->
+	<insert id="addCity" parameterType="com.utstar.networkshop.domain.City">
+		INSERT INTO city
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="id != null">
+					id,
+				</if>
+				<if test="code != null">
+					code,
+				</if>
+				<if test="name != null">
+					name,
+				</if>
+					<if test="provincecode != null">
+						provincecode
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="id != null">
+						#{id},
+					</if>
+					<if test="code != null">
+						#{code},
+					</if>
+					<if test="name != null">
+						#{name},
+					</if>
+					<if test="provincecode != null">
+						#{provincecode}
+					</if>
+		</trim>
+	</insert>
+</mapper>

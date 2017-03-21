@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.utstar.networkshop.dao.BuyerDao">
+	<resultMap id="buyer" type="com.utstar.networkshop.domain.Buyer">
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="realName" column="realname" />
+		<result property="registerTime" column="registertime" />
+		<result property="provinceId" column="provinceid" />
+		<result property="cityId" column="cityid" />
+		<result property="townId" column="townid" />
+		<result property="addr" column="addr" />
+		<result property="isDel" column="isdel" />
+	</resultMap>
+	<!-- Select SQL -->
+	<sql id="buyerSelector">
+		SELECT
+			id,username,password,gender,email,realname,registertime,province,city,town,addr,isdel
+		FROM buyer
+	</sql>
+	<sql id="buyerListWhere">
+		<where>
+				<if test="id != null">
+					id=#{id}
+				</if>
+				<if test="username != null">
+					and username=#{username}
+				</if>
+				<if test="password != null">
+					and password=#{password}
+				</if>
+				<if test="gender != null">
+					and gender=#{gender}
+				</if>
+				<if test="email != null">
+					and email=#{email}
+				</if>
+				<if test="realName != null">
+					and realname=#{realName}
+				</if>
+				<if test="registerTime != null">
+					and registertime=#{registerTime}
+				</if>
+				<if test="provinceId != null">
+					and provinceid=#{provinceId}
+				</if>
+				<if test="cityId != null">
+					and cityid=#{cityId}
+				</if>
+				<if test="townId != null">
+					and townid=#{townId}
+				</if>
+				<if test="addr != null">
+					and addr=#{addr}
+				</if>
+				<if test="isDel != null">
+					and isdel=#{isDel}
+				</if>
+		</where>
+	</sql>
+
+
+	<!-- 根据主键查询 -->
+	<select id="getBuyerByKey" resultMap="buyer" parameterType="hashMap">
+		SELECT id,username,password,gender,email,realname,registertime,provinceid,cityid,townid,addr,isdel FROM buyer
+		WHERE
+		username=#{username}
+	</select>
+	<select id="getBuyersByKeys" resultMap="buyer" parameterType="ArrayList">
+		SELECT id,username,password,gender,email,real_name,registertime,province,city,town,addr,isdel FROM buyer
+		WHERE
+		username in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 根据主键删除 -->
+	<delete id="deleteByKey" parameterType="hashMap">
+		DELETE FROM buyer
+		WHERE
+		username=#{id}
+	</delete>
+
+	<!-- 根据主键批量删除 -->
+	<delete id="deleteByKeys">
+		DELETE FROM buyer
+		WHERE
+		username in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 根据主键更新 -->
+	<update id="updateBuyerByKey" parameterType="com.utstar.networkshop.domain.Buyer">
+		UPDATE buyer
+		<set>
+			<trim suffixOverrides=",">
+				<if test="username != null">
+					username = #{username},
+				</if>
+				<if test="password != null">
+					password = #{password},
+				</if>
+				<if test="gender != null">
+					gender = #{gender},
+				</if>
+				<if test="email != null">
+					email = #{email},
+				</if>
+				<if test="realName != null">
+					realname = #{realName},
+				</if>
+				<if test="registerTime != null">
+					registertime = #{registerTime},
+				</if>
+				<if test="provinceId != null">
+					provinceid = #{provinceId},
+				</if>
+				<if test="cityId != null">
+					cityid = #{cityId},
+				</if>
+				<if test="townId != null">
+					townid = #{townId},
+				</if>
+				<if test="addr != null">
+					addr = #{addr},
+				</if>
+				<if test="isDel != null">
+					is_del = #{isDel}
+				</if>
+			</trim>
+		</set>
+		WHERE
+		username=#{username}
+	</update>
+	<!-- 分页 -->
+	<select id="getBuyerListWithPage" parameterType="com.utstar.networkshop.domain.Buyer" resultMap="buyer">
+		<include refid="buyerSelector" />
+		<include refid="buyerListWhere" />
+	</select>
+	<!-- 数据总数 -->
+	<select id="getBuyerListCount" parameterType="com.utstar.networkshop.domain.Buyer" resultType="int">
+		SELECT count(1) FROM bbs_buyer
+		<include refid="buyerListWhere" />
+	</select>
+	<!-- 数据集合 -->
+	<select id="getBuyerList" parameterType="com.utstar.networkshop.domain.Buyer" resultMap="buyer">
+		<include refid="buyerSelector" />
+		<include refid="buyerListWhere" />
+	</select>
+	<!-- 添加 -->
+	<insert id="addBuyer" parameterType="com.utstar.networkshop.domain.Buyer">
+		INSERT INTO buyer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="username != null">
+					username,
+				</if>
+				<if test="password != null">
+					password,
+				</if>
+				<if test="gender != null">
+					gender,
+				</if>
+				<if test="email != null">
+					email,
+				</if>
+				<if test="realName != null">
+					realname,
+				</if>
+				<if test="registerTime != null">
+					registertime,
+				</if>
+				<if test="provinceId != null">
+					provinceid,
+				</if>
+				<if test="cityId != null">
+					cityid,
+				</if>
+				<if test="townId != null">
+					townid,
+				</if>
+				<if test="addr != null">
+					addr,
+				</if>
+					<if test="isDel != null">
+						isdel
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="username != null">
+						#{username},
+					</if>
+					<if test="password != null">
+						#{password},
+					</if>
+					<if test="gender != null">
+						#{gender},
+					</if>
+					<if test="email != null">
+						#{email},
+					</if>
+					<if test="realName != null">
+						#{realName},
+					</if>
+					<if test="registerTime != null">
+						#{registerTime},
+					</if>
+					<if test="provinceId != null">
+						#{provinceId},
+					</if>
+					<if test="cityId != null">
+						#{cityId},
+					</if>
+					<if test="townId != null">
+						#{townId},
+					</if>
+					<if test="addr != null">
+						#{addr},
+					</if>
+					<if test="isDel != null">
+						#{isDel}
+					</if>
+		</trim>
+	</insert>
+</mapper>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.SkuDao">
+	 <resultMap id="sku" type="com.utstar.networkshop.domain.Sku">
+		<result property="skuId" column="skuid" />
+		<result property="productId" column="productid" />
+		<result property="colorId" column="colorid" />
+		<result property="size" column="size" />
+		<result property="deliveFee" column="deliveFee" />
+		<result property="skuPrice" column="skuPrice" />
+		<result property="stockInventory" column="stockInventory" />
+		<result property="skuUpperLimit" column="skuUpperLimit" />
+		<result property="location" column="location" />
+		<result property="skuImg" column="skuimg" />
+		<result property="skuSort" column="skuSort" />
+		<result property="skuName" column="skuName" />
+		<result property="marketPrice" column="marketPrice" />
+		<result property="createTime" column="createTime" />
+		<result property="updateTime" column="updateTime" />
+		<result property="createUserId" column="createUserId" />
+		<result property="updateUserId" column="updateUserId" />
+		<result property="lastStatus" column="lastStatus" />
+		<result property="skuType" column="skuType" />
+		<result property="sales" column="sales" />
+	</resultMap>
+	<insert id="addSku" parameterType="com.utstar.networkshop.domain.Sku" >
+		INSERT INTO sku
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="skuId != null">
+					skuid,
+				</if>
+				<if test="productId != null">
+					productid,
+				</if>
+				<if test="colorId != null">
+					colorid,
+				</if>
+				<if test="size != null">
+					size,
+				</if>
+				<if test="deliveFee != null">
+					deliveFee,
+				</if>
+				<if test="skuPrice != null">
+					skuPrice,
+				</if>
+				<if test="stockInventory != null">
+					stockInventory,
+				</if>
+				<if test="skuUpperLimit != null">
+					skuUpperLimit,
+				</if>
+				<if test="location != null">
+					location,
+				</if>
+				<if test="skuImg != null">
+					skuimg,
+				</if>
+				<if test="skuSort != null">
+					skuSort,
+				</if>
+				<if test="skuName != null">
+					skuName,
+				</if>
+				<if test="marketPrice != null">
+					marketPrice,
+				</if>
+				<if test="createTime != null">
+					createTime,
+				</if>
+				<if test="updateTime != null">
+					updateTime,
+				</if>
+				<if test="createUserId != null">
+					createUserId,
+				</if>
+				<if test="updateUserId != null">
+					updateUserId,
+				</if>
+				<if test="lastStatus != null">
+					lastStatus,
+				</if>
+				<if test="skuType != null">
+					skuType,
+				</if>
+					<if test="sales != null">
+						sales
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="skuId != null">
+						#{skuId},
+					</if>
+					<if test="productId != null">
+						#{productId},
+					</if>
+					<if test="colorId != null">
+						#{colorId},
+					</if>
+					<if test="size != null">
+						#{size},
+					</if>
+					<if test="deliveFee != null">
+						#{deliveFee},
+					</if>
+					<if test="skuPrice != null">
+						#{skuPrice},
+					</if>
+					<if test="stockInventory != null">
+						#{stockInventory},
+					</if>
+					<if test="skuUpperLimit != null">
+						#{skuUpperLimit},
+					</if>
+					<if test="location != null">
+						#{location},
+					</if>
+					<if test="skuImg != null">
+						#{skuImg},
+					</if>
+					<if test="skuSort != null">
+						#{skuSort},
+					</if>
+					<if test="skuName != null">
+						#{skuName},
+					</if>
+					<if test="marketPrice != null">
+						#{marketPrice},
+					</if>
+					<if test="createTime != null">
+						#{createTime},
+					</if>
+					<if test="updateTime != null">
+						#{updateTime},
+					</if>
+					<if test="createUserId != null">
+						#{createUserId},
+					</if>
+					<if test="updateUserId != null">
+						#{updateUserId},
+					</if>
+					<if test="lastStatus != null">
+						#{lastStatus},
+					</if>
+					<if test="skuType != null">
+						#{skuType},
+					</if>
+					<if test="sales != null">
+						#{sales}
+					</if>
+		</trim>
+	</insert>
+	<select id="getSkuList" parameterType="com.utstar.networkshop.domain.Sku" resultMap="sku">
+		select skuid,productid,colorid,size,deliveFee,skuPrice,stockInventory,
+		skuUpperLimit,location,skuimg,skuSort,skuName,marketPrice,createTime,updateTime,createUserId,updateUserId,lastStatus,skuType,sales
+		FROM sku
+		<where>
+				<if test="skuId != null">
+					and skuid=#{skuId}
+				</if>
+				<if test="productId != null">
+					and productid=#{productId}
+				</if>
+				<if test="colorId != null">
+					and colorid=#{colorId}
+				</if>
+				<if test="size != null">
+					and size=#{size}
+				</if>
+				<if test="deliveFee != null">
+					and deliveFee=#{deliveFee}
+				</if>
+				<if test="skuPrice != null">
+					and skuPrice=#{skuPrice}
+				</if>
+				<if test="stockInventory != null">
+					and stockInventory=#{stockInventory}
+				</if>
+				<if test="skuUpperLimit != null">
+					and skuUpperLimit=#{skuUpperLimit}
+				</if>
+				<if test="location != null">
+					and location=#{location}
+				</if>
+				<if test="skuImg != null">
+					and skuimg=#{skuImg}
+				</if>
+				<if test="skuSort != null">
+					and skuSort=#{skuSort}
+				</if>
+				<if test="skuName != null">
+					and sku_name=#{skuName}
+				</if>
+				<if test="marketPrice != null">
+					and marketPrice=#{marketPrice}
+				</if>
+				<if test="createTime != null">
+					and createTime=#{createTime}
+				</if>
+				<if test="updateTime != null">
+					and updateTime=#{updateTime}
+				</if>
+				<if test="createUserId != null">
+					and createUserId=#{createUserId}
+				</if>
+				<if test="updateUserId != null">
+					and updateUserId=#{updateUserId}
+				</if>
+				<if test="lastStatus != null">
+					and lastStatus=#{lastStatus}
+				</if>
+				<if test="skuType != null">
+					and skuType=#{skuType}
+				</if>
+				<if test="sales != null">
+					and sales=#{sales}
+				</if>
+		</where>
+	</select>
+	<update id="updateSkuByKey" parameterType="com.utstar.networkshop.domain.Sku">
+		UPDATE sku
+		<set>
+			<trim suffixOverrides=",">
+				<if test="skuId != null">
+					 skuid=#{skuId},
+				</if>
+				<if test="productId != null">
+					 productid=#{productId},
+				</if>
+				<if test="colorId != null">
+					 colorid=#{colorId},
+				</if>
+				<if test="size != null">
+					 size=#{size},
+				</if>
+				<if test="deliveFee != null">
+					 deliveFee=#{deliveFee},
+				</if>
+				<if test="skuPrice != null">
+					 skuPrice=#{skuPrice},
+				</if>
+				<if test="stockInventory != null">
+					 stockInventory=#{stockInventory},
+				</if>
+				<if test="skuUpperLimit != null">
+					 skuUpperLimit=#{skuUpperLimit},
+				</if>
+				<if test="location != null">
+					 location=#{location},
+				</if>
+				<if test="skuImg != null">
+					 skuimg=#{skuImg},
+				</if>
+				<if test="skuSort != null">
+					 skuSort=#{skuSort},
+				</if>
+				<if test="skuName != null">
+					 sku_name=#{skuName},
+				</if>
+				<if test="marketPrice != null">
+					 marketPrice=#{marketPrice},
+				</if>
+				<if test="createTime != null">
+					 createTime=#{createTime},
+				</if>
+				<if test="updateTime != null">
+					 updateTime=#{updateTime},
+				</if>
+				<if test="createUserId != null">
+					 createUserId=#{createUserId},
+				</if>
+				<if test="updateUserId != null">
+					 updateUserId=#{updateUserId},
+				</if>
+				<if test="lastStatus != null">
+					 lastStatus=#{lastStatus},
+				</if>
+				<if test="skuType != null">
+					 skuType=#{skuType},
+				</if>
+				<if test="sales != null">
+					 sales=#{sales}
+				</if>
+			</trim>
+		</set>
+		WHERE
+		skuid=#{skuId}
+	</update>
+	<!-- 库存大于>0 -->
+	<select id="getStock" parameterType="Integer" resultMap="sku">
+		select skuid,productid,colorid,size,deliveFee,skuPrice,stockInventory,
+		skuUpperLimit,location,skuimg,skuSort,skuName,marketPrice,createTime,updateTime,createUserId,updateUserId,lastStatus,skuType,sales
+		FROM sku
+		<where>
+			stockInventory > 0 and productid = #{productId}
+		</where>
+	</select>
+		<!-- 根据主键查询 -->
+	<select id="getSkuByKey" resultMap="sku" parameterType="hashMap">
+		select skuid,productid,colorid,size,deliveFee,skuPrice,stockInventory,
+		skuUpperLimit,location,skuimg,skuSort,skuName,marketPrice,createTime,updateTime,createUserId,updateUserId,lastStatus,skuType,sales
+		FROM sku
+		where skuid=#{skuId}
+	</select>
+</mapper>

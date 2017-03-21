@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间特殊作用： 如果使用mapper动态代理方法，这里就需要配置mapper接口地址-->
+<mapper namespace="com.utstar.networkshop.dao.ImageDao">
+	 <resultMap type="com.utstar.networkshop.domain.Image" id="image">
+		<result property="imgId" column="imgid"></result>
+		<result property="productId" column="productid"></result>
+		<result property="imgUrl" column="imgurl"></result>
+		<result property="isDef" column="isdef"></result>
+	</resultMap> 
+	<select id="getImageByProductId" parameterType="com.utstar.networkshop.domain.Image" resultMap="image">
+		select imgid,productid,imgurl,isdef from image
+		<where>
+			<if test="productId != null">
+				productid = #{productId}
+			</if>
+			<if test="isDef != null">
+				and isdef = #{isDef}
+			</if>
+		</where>
+	</select>
+	<insert id="addImg" parameterType="com.utstar.networkshop.domain.Image" useGeneratedKeys="true" keyProperty="imgId">
+		insert into image(productid,imgurl,isdef)values(
+		#{productId},#{imgUrl},#{isDef})
+	</insert>
+</mapper>

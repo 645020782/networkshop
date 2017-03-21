@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.utstar.networkshop.dao.DetailDao">
+	<resultMap id="detail" type="com.utstar.networkshop.domain.Detail">
+		<result property="id" column="id" />
+		<result property="orderId" column="orderid" />
+		<result property="productNo" column="productno" />
+		<result property="productName" column="productname" />
+		<result property="color" column="color" />
+		<result property="size" column="size" />
+		<result property="skuPrice" column="skuprice" />
+		<result property="amount" column="amount" />
+	</resultMap>
+	<!-- Select SQL -->
+	<sql id="detailSelector">
+		SELECT
+			id,orderid,productno,productname,color,size,skuprice,amount
+		FROM detail
+	</sql>
+	<sql id="detailListWhere">
+		<where>
+				<if test="id != null">
+					and id=#{id}
+				</if>
+				<if test="orderId != null">
+					and orderid=#{orderId}
+				</if>
+				<if test="productNo != null">
+					and productno=#{productNo}
+				</if>
+				<if test="productName != null">
+					and productname=#{productName}
+				</if>
+				<if test="color != null">
+					and color=#{color}
+				</if>
+				<if test="size != null">
+					and size=#{size}
+				</if>
+				<if test="skuPrice != null">
+					and skuprice=#{skuPrice}
+				</if>
+				<if test="amount != null">
+					and amount=#{amount}
+				</if>
+		</where>
+	</sql>
+
+
+
+	<!-- 根据主键查询 -->
+	<select id="getDetailByKey" resultMap="detail" parameterType="hashMap">
+		SELECT id,orderid,productno,productname,color,size,skuprice,amount FROM detail
+		WHERE
+		id=#{id}
+	</select>
+	<select id="getDetailsByKeys" resultMap="detail" parameterType="ArrayList">
+		SELECT id,orderid,productno,productname,color,size,skuprice,amount FROM detail
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<!-- 根据主键删除 -->
+	<delete id="deleteByKey" parameterType="hashMap">
+		DELETE FROM detail
+		WHERE
+		id=#{id}
+	</delete>
+
+	<!-- 根据主键批量删除 -->
+	<delete id="deleteByKeys">
+		DELETE FROM detail
+		WHERE
+		id in
+		<foreach collection="list" separator="," item="id" open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 根据主键更新 -->
+	<update id="updateDetailByKey" parameterType="com.utstar.networkshop.domain.Detail">
+		UPDATE detail
+		<set>
+			<trim suffixOverrides=",">
+				<if test="id != null">
+					id = #{id},
+				</if>
+				<if test="orderId != null">
+					order_id = #{orderId},
+				</if>
+				<if test="productNo != null">
+					product_no = #{productNo},
+				</if>
+				<if test="productName != null">
+					product_name = #{productName},
+				</if>
+				<if test="color != null">
+					color = #{color},
+				</if>
+				<if test="size != null">
+					size = #{size},
+				</if>
+				<if test="skuPrice != null">
+					sku_price = #{skuPrice},
+				</if>
+				<if test="amount != null">
+					amount = #{amount}
+				</if>
+			</trim>
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+	<!-- 分页 -->
+	<select id="getDetailListWithPage" parameterType="com.utstar.networkshop.domain.Detail" resultMap="detail">
+		<include refid="detailSelector" />
+		<include refid="detailListWhere" />
+	</select>
+	<!-- 数据总数 -->
+	<select id="getDetailListCount" parameterType="com.utstar.networkshop.domain.Detail" resultType="int">
+		SELECT count(1) FROM detail
+		<include refid="detailListWhere" />
+	</select>
+	<!-- 数据集合 -->
+	<select id="getDetailList" parameterType="com.utstar.networkshop.domain.Detail" resultMap="detail">
+		<include refid="detailSelector" />
+		<include refid="detailListWhere" />
+	</select>
+	<!-- 添加 -->
+	<insert id="addDetail" parameterType="com.utstar.networkshop.domain.Detail">
+		INSERT INTO detail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="id != null">
+					id,
+				</if>
+				<if test="orderId != null">
+					orderid,
+				</if>
+				<if test="productNo != null">
+					productno,
+				</if>
+				<if test="productName != null">
+					productname,
+				</if>
+				<if test="color != null">
+					color,
+				</if>
+				<if test="size != null">
+					size,
+				</if>
+				<if test="skuPrice != null">
+					skuprice,
+				</if>
+					<if test="amount != null">
+						amount
+					</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+					<if test="id != null">
+						#{id},
+					</if>
+					<if test="orderId != null">
+						#{orderId},
+					</if>
+					<if test="productNo != null">
+						#{productNo},
+					</if>
+					<if test="productName != null">
+						#{productName},
+					</if>
+					<if test="color != null">
+						#{color},
+					</if>
+					<if test="size != null">
+						#{size},
+					</if>
+					<if test="skuPrice != null">
+						#{skuPrice},
+					</if>
+					<if test="amount != null">
+						#{amount}
+					</if>
+		</trim>
+	</insert>
+</mapper>
